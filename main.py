@@ -3,7 +3,7 @@ import yfinance as yf
 GBTC_DATE = '2017-01-02'
 
 def merge_dfs(df0, df1):
-        df = df0.merge(df1, on='Date')
+        df = df0.merge(df1, on='Date')  
         df['Ratio'] = df['Close_x'] / df['Close_y']
         return calculate_moving_averages(df)
 
@@ -19,7 +19,7 @@ def get_ma_score(df):
 
 def main():
         # Base Calculation
-        moat = yf.Ticker('MOAT').history(start=GBTC_DATE)
+        moat = yf.Ticker('VUG').history(start=GBTC_DATE)
         xlre = yf.Ticker('XLRE').history(start=GBTC_DATE)
         gnr = yf.Ticker('GNR').history(start=GBTC_DATE)
         btc = yf.Ticker('BTC-USD').history(start=GBTC_DATE)
@@ -39,7 +39,7 @@ def main():
         gnr_xlre = merge_dfs(gnr, xlre)
         gbtc_xlre = merge_dfs(btc, xlre)
         gld_xlre = merge_dfs(gld, xlre)
-
+  
         # Price in GNR (Commodities)
         moat_gnr = merge_dfs(moat, gnr)
         xlre_gnr = merge_dfs(xlre, gnr)
@@ -74,13 +74,13 @@ def main():
         rank_grn = get_ma_score(gnr_moat) + get_ma_score(gnr_xlre) + get_ma_score(gnr_gbtc) + get_ma_score(gnr_gld)
         rank_btc = get_ma_score(gbtc_moat) + get_ma_score(gbtc_xlre) + get_ma_score(gbtc_gnr) + get_ma_score(gbtc_gld)
         rank_gld = get_ma_score(gld_moat) + get_ma_score(gld_xlre) + get_ma_score(gld_gnr) + get_ma_score(gld_gbtc)
-
-
-        print('MOAT = ' + str(rank_moat))
-        print('XLRE = ' + str(rank_xlre))
-        print('GRN = ' + str( rank_grn))
-        print('BTC-USD = ' + str(rank_btc))
-        print('GLD = ' + str(rank_gld))
+        
+        print('SCORES\n=======================\nHigher = Most momentum\nLower = Recent bearish\n=======================')
+        print('Stock (VUG) = ' + str(rank_moat))
+        print('Real Estate (XLRE) = ' + str(rank_xlre))
+        print('Commodities (GRN) = ' + str( rank_grn))
+        print('Bitcoin (BTC-USD) = ' + str(rank_btc))
+        print('Gold (GLD) = ' + str(rank_gld))
 
 
 if __name__ == "__main__":
