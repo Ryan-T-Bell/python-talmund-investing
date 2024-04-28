@@ -3,7 +3,7 @@ import yfinance as yf
 GBTC_DATE = '2017-01-02'
 
 def merge_dfs(df0, df1):
-        df = df0.merge(df1, on='Date')  
+        df = df0.merge(df1, on='Date')
         df['Ratio'] = df['Close_x'] / df['Close_y']
         return calculate_moving_averages(df)
 
@@ -39,13 +39,13 @@ def main():
         gnr_xlre = merge_dfs(gnr, xlre)
         gbtc_xlre = merge_dfs(btc, xlre)
         gld_xlre = merge_dfs(gld, xlre)
-  
+
         # Price in GNR (Commodities)
-        moat_vcmdx = merge_dfs(moat, vcmdx)
-        xlre_vcmdx = merge_dfs(xlre, vcmdx)
-        gnr_vcmdx = merge_dfs(gnr, vcmdx)
-        gbtc_vcmdx = merge_dfs(btc, vcmdx)
-        gld_vcmdx = merge_dfs(gld, vcmdx)
+        moat_gnr = merge_dfs(moat, gnr)
+        xlre_gnr = merge_dfs(xlre, gnr)
+        gnr_gnr = merge_dfs(gnr, gnr)
+        gbtc_gnr = merge_dfs(btc, gnr)
+        gld_gnr = merge_dfs(gld, gnr)
 
         # Price in BTC (Bitcoin)
         moat_gbtc = merge_dfs(moat, btc)
@@ -69,13 +69,13 @@ def main():
         tlt_tlt = merge_dfs(tlt, tlt)
 
         # Calculate Rankings
-        rank_moat = get_ma_score(moat_xlre) + get_ma_score(moat_vcmdx) + get_ma_score(moat_gbtc) + get_ma_score(moat_gld)
-        rank_xlre = get_ma_score(xlre_moat) + get_ma_score(xlre_vcmdx) + get_ma_score(xlre_gbtc) + get_ma_score(xlre_gld)
-        rank_grn = get_ma_score(vcmdx_moat) + get_ma_score(vcmdx_xlre) + get_ma_score(vcmdx_gbtc) + get_ma_score(vcmdx_gld)
-        rank_btc = get_ma_score(gbtc_moat) + get_ma_score(gbtc_xlre) + get_ma_score(gbtc_vcmdx) + get_ma_score(gbtc_gld)
-        rank_gld = get_ma_score(gld_moat) + get_ma_score(gld_xlre) + get_ma_score(gld_vcmdx) + get_ma_score(gld_gbtc)
-        
-        
+        rank_moat = get_ma_score(moat_xlre) + get_ma_score(moat_gnr) + get_ma_score(moat_gbtc) + get_ma_score(moat_gld)
+        rank_xlre = get_ma_score(xlre_moat) + get_ma_score(xlre_gnr) + get_ma_score(xlre_gbtc) + get_ma_score(xlre_gld)
+        rank_grn = get_ma_score(gnr_moat) + get_ma_score(gnr_xlre) + get_ma_score(gnr_gbtc) + get_ma_score(gnr_gld)
+        rank_btc = get_ma_score(gbtc_moat) + get_ma_score(gbtc_xlre) + get_ma_score(gbtc_gnr) + get_ma_score(gbtc_gld)
+        rank_gld = get_ma_score(gld_moat) + get_ma_score(gld_xlre) + get_ma_score(gld_gnr) + get_ma_score(gld_gbtc)
+
+
         print('MOAT = ' + str(rank_moat))
         print('XLRE = ' + str(rank_xlre))
         print('GRN = ' + str( rank_grn))
